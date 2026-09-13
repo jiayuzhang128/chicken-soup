@@ -118,15 +118,11 @@ certbot --nginx -d jinrijitang.com -d www.jinrijitang.com
 
 ---
 
-## 5. 上线前必读：Google Fonts 的国内问题
+## 5. 字体说明（2026-09 已解决，无需操作）
 
-`index.html` 里引用了 Google Fonts（Noto Serif SC / ZCOOL XiaoWei）。**大陆用户加载 Google Fonts 会慢或失败**，页面会自动退到本地楷体/宋体兜底（已做了字体补丁，观感仍有 8 成）。三个处理选项：
+原方案引用 Google Fonts（Noto Serif SC / ZCOOL XiaoWei），大陆加载慢或失败会造成首屏阻塞与字形闪烁。**现已改为自托管子集字体**：`assets/fonts/` 下两款 woff2（按站点实际用字 1830 字子集化，合计约 1.2MB），`@font-face` 本地引用，无任何外部字体请求。
 
-1. **什么都不做**：国内用户多数时候能通（fonts.googleapis.com 有国内节点，时好时坏），失败也有兜底
-2. **换镜像**：把 `<link>` 里的域名换成 `fonts.loli.net`（Google Fonts 国内镜像，用法完全一致）
-3. **自托管字体**（最稳）：从 Google Fonts 下载 woff2 子集放进 `assets/fonts/`，`@font-face` 本地引用——字体文件较大（中文全量 MB 级），需按需子集化，折腾但彻底
-
-推荐国内部署选 2，海外部署保持 1。
+日后新增大量语录出现缺字（个别生僻字回退楷体）时，见 `tools/extract_charset.js` 重跑子集化补齐。
 
 ---
 

@@ -1,0 +1,10 @@
+{
+  "name": "chicken-soup-daily",
+  "version": "20260912.6",
+  "private": true,
+  "description": "今日鸡汤 · 每天一句，好好生活（纯静态站：HTML/CSS/JS + 本地子集字体，零构建零后端）",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/regression.js"
+  }
+}

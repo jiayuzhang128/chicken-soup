@@ -1,3 +1,16 @@
-# 截图工具临时产物
+# 依赖（本项目零依赖，防御性忽略）
+node_modules/
+
+# 本地与测试产物（截图不入库，CI 上以 artifacts 上传）
+tests/shots/
+screenshots/
 .shots/
 .shots$name.png
+*.bak
+
+# 本地学习材料（非站点文件，静态托管根目录会公开一切，故不入库）
+github-actions-tutorial.html
+
+# 系统杂项
+Thumbs.db
+.DS_Store

@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # npm test 会自起本地服务器并用 runner 预装的 Google Chrome 跑全量回归
+      # （7 主题真实点击 / 动效组件 / 收藏 / 手风琴 / 搜索 / 换一条滚动保持 / 390px 等）
+      - name: 全量回归（无头 Chrome 真实输入管线）
+        run: npm test
+
+      - name: 上传回归截图
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regression-screenshots
+          path: tests/shots/
+          retention-days: 14

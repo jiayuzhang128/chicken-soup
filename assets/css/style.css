@@ -344,7 +344,27 @@ html.theme-fade, html.theme-fade *, html.theme-fade *::before, html.theme-fade *
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* 字形补丁：ZCOOL XiaoWei 的「回」(U+56DE) 是实心方块缺陷字形，定向交给楷体 */
+/* ---------- 本地字体（自托管子集） ---------- */
+/* 按站点实际用字（1830 字）子集化的 woff2，取代 Google Fonts 外链：
+   旧方案 fonts.googleapis.com 的 CSS 渲染阻塞 ~2.8s，且 27 个字体分片共 1.8MB
+   在首屏后分批到达，每到一个分片换一次字形（swap 闪烁、文字"动一下"）。
+   现为本地毫秒级加载，无网络依赖。Noto Serif SC 为可变字体（wght 200-900 覆盖全部字重）。
+   日后新增语录若出现子集外缺字：该字自动回退本地楷体/宋体，不糊不坏；重跑子集化即可补齐 */
+@font-face {
+  font-family: "Noto Serif SC";
+  src: url("../fonts/noto-serif-sc-sub.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ZCOOL XiaoWei";
+  src: url("../fonts/zcool-xiaowei-sub.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* 字形补丁：ZCOOL XiaoWei 的「回」(U+56DE) 是实心方块缺陷字形，定向交给楷体。
+   必须排在上面的同名 @font-face 之后：同 family 下后定义者优先生效 */
 @font-face {
   font-family: "ZCOOL XiaoWei";
   src: local("KaiTi"), local("Kaiti SC"), local("STKaiti");
