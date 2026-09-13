@@ -13,7 +13,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22  # 回归脚本依赖全局 WebSocket（CDP 通信），Node 21+ 才默认提供
 
       # npm test 会自起本地服务器并用 runner 预装的 Google Chrome 跑全量回归
       # （7 主题真实点击 / 动效组件 / 收藏 / 手风琴 / 搜索 / 换一条滚动保持 / 390px 等）
