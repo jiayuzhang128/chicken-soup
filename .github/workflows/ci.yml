@@ -27,3 +27,21 @@ jobs:
           name: regression-screenshots
           path: tests/shots/
           retention-days: 14
+
+  # CD：回归全绿后自动更新国内服务器（阿里云上海 ECS，/var/www/chickensoup，git pull 即生效）
+  deploy:
+    needs: regression
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - name: SSH 部署（服务器端 git pull）
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          install -m 600 /dev/null ~/deploy_key
+          echo "$SSH_KEY" > ~/deploy_key
+          ssh-keyscan -H 139.224.30.54 >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -i ~/deploy_key -o BatchMode=yes root@139.224.30.54 \
+            "cd /var/www/chickensoup && git pull --ff-only && git log --oneline -1 && curl -s -o /dev/null -w 'server-local http %{http_code}\n' -H 'Host: zfishai.cn' http://127.0.0.1/"
+          rm -f ~/deploy_key
